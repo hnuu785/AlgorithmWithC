@@ -32,7 +32,6 @@ int main() {
 		else if (strcmp("top", order) == 0) {
 			top();
 		}
-		//printf("idx : %d\n", idx);
 	}
 	return 0;
 }
