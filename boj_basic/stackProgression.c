@@ -39,6 +39,10 @@ int main() {
 	else {
 		printf("NO");
 	}
+	//노드 전부 free
+	while (H->next != NULL) {
+		
+	}
 }
 
 void push(node* H, int x) {
