@@ -6,59 +6,67 @@ typedef struct NODE {
 	struct NODE* next;
 }node;
 
-int idx = 0;
-char printer[100001] = {0};
-
 void push();
 void pop();
 
 int main() {
-	int n, i, j, ndx = 0;
+	int N, i;
+	int idx = 0;
+	int cnt = 0;
 	int arr[100000] = {0};
-	int isOK = 1;
-	node* H = (node*)malloc(sizeof(node));
-	H->next = NULL;
+	char plmi[200000] = {0};
+	scanf("%d", &N);
+	node* head = (node*)malloc(sizeof(node));
+	head->next = NULL;
 	
-	scanf("%d", &n);
-	for (i = 0; i < n; i++) {
+	// 늘어놓을 수열 받음
+	for (i = 0; i < N; i++)
 		scanf("%d", arr + i);
-	}
-	for (i = 0; i < n; i++) {
-		push(H, i);
-		while (arr[ndx] == (H->next)->data) {
-			pop(H); ndx++;
+	// 1부터 N까지 push하면서 필요하면 pop하기
+	// arr 1 2
+	// sta 
+	// ret 1 2
+	// + - + -
+	for (i = 1; i <= N; i++) {
+		// printf("i %d\n", i);
+		push(head, i);
+		plmi[cnt] = '+';
+		cnt++;
+		while (head->next != NULL && arr[idx] == (head->next)->data) {
+			pop(head);
+			plmi[cnt] = '-';
+			cnt++;
+			idx++;
 		}
-		if (arr[ndx] < (H->next)->data) {
-			isOK = 0;
-			break;
+		// printf("while end\n");
+	}
+	
+	if (head->next == NULL) {
+		for (i = 0; i < N * 2; i++) {
+			printf("%c", plmi[i]);
+			printf("\n");
 		}
 	}
-	if (isOK)
-		for (i = 0; i < idx; i++)
-			printf("%c\n", printer[i]);
 	else {
 		printf("NO");
 	}
-	//노드 전부 free
-	while (H->next != NULL) {
-		
+	
+	// stack 연결리스트 free
+	while(head->next != NULL) {
+		node* del = head->next;
+		head->next = (head->next)->next;
+		free(del);
 	}
 }
 
-void push(node* H, int x) {
-	node* new = (node*)malloc(sizeof(node));
-	new->next = H->next;
-	H->next = new;
-	new->data = x;
-	
-	printer[idx] = '+';
-	idx++;
+void push(node* head, int x) {
+	node* newNode = (node*)malloc(sizeof(node));
+	newNode->next = head->next;
+	newNode->data = x;
+	head->next = newNode;
 }
-void pop(node* H) {
-	node* tmp = H->next;
-	H->next = (H->next)->next;
-	free(tmp);
-	
-	printer[idx] = '-';
-	idx++;
+void pop(node* head) {
+	node* del = head->next;
+	head->next = (head->next)->next;
+	free(del);
 }
